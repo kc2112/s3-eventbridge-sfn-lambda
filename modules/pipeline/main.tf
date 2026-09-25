@@ -1,15 +1,21 @@
 locals {
-  partition = data.aws_partition.current.partition
+  partition  = data.aws_partition.current.partition
   account_id = data.aws_caller_identity.current.account_id
   region     = data.aws_region.current.name
 
-  # S3 names cannot contain underscores.
-  bucket_name         = "${var.prefix}-${var.bucket_name}-${var.name_suffix}-${local.account_id}"
-  process_lambda_name = "${var.prefix}_process_${local.region}"
-  throttle_fn_name    = "${var.prefix}_${var.throttle_function_name}_${var.name_suffix}"
-  state_machine_name  = "${var.prefix}_${var.state_machine_name}_${var.name_suffix}"
-  input_queue_name    = "${var.prefix}_input_queue_${var.name_suffix}"
-  output_queue_name   = "${var.prefix}_output_queue_${var.name_suffix}"
+  # AWS resource names: kebab-case. Underscores in inputs are normalized.
+  prefix     = replace(var.prefix, "_", "-")
+  suffix     = replace(var.name_suffix, "_", "-")
+  bucket_base = replace(var.bucket_name, "_", "-")
+  throttle   = replace(var.throttle_function_name, "_", "-")
+  sfn        = replace(var.state_machine_name, "_", "-")
+
+  bucket_name         = "${local.prefix}-${local.bucket_base}-${local.suffix}-${local.account_id}"
+  process_lambda_name = "${local.prefix}-process-${local.region}"
+  throttle_fn_name    = "${local.prefix}-${local.throttle}-${local.suffix}"
+  state_machine_name  = "${local.prefix}-${local.sfn}-${local.suffix}"
+  input_queue_name    = "${local.prefix}-input-queue-${local.suffix}"
+  output_queue_name   = "${local.prefix}-output-queue-${local.suffix}"
 }
 
 module "s3" {

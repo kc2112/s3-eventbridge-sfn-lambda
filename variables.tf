@@ -50,13 +50,13 @@ variable "bucket_name" {
 variable "throttle_function_name" {
   description = "Base name of the SQS throttle Lambda. Prefix and region suffix are applied."
   type        = string
-  default     = "throttle_fn"
+  default     = "throttle-fn"
 }
 
 variable "state_machine_name" {
   description = "Base state machine name. Prefix and region suffix are applied."
   type        = string
-  default     = "process_data"
+  default     = "process-data"
 }
 
 variable "lambda_timeout" {
