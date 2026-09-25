@@ -9,7 +9,7 @@ output "primary" {
     sfn_name            = module.primary.sfn_name
     sfn_arn             = module.primary.sfn_arn
     process_lambda_name = module.primary.process_lambda_name
-    starter_lambda_name = module.primary.starter_lambda_name
+    throttle_lambda_name = module.primary.throttle_lambda_name
   }
 }
 
@@ -24,6 +24,6 @@ output "secondary" {
     sfn_name            = module.secondary[0].sfn_name
     sfn_arn             = module.secondary[0].sfn_arn
     process_lambda_name = module.secondary[0].process_lambda_name
-    starter_lambda_name = module.secondary[0].starter_lambda_name
+    throttle_lambda_name = module.secondary[0].throttle_lambda_name
   }
 }

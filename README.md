@@ -17,8 +17,8 @@ terraform apply
 GovCloud:
 
 ```hcl
-primary   = "us-gov-west-1"
-secondary = "us-gov-east-1"
+primary   = "us-gov-east-1"
+secondary = "us-gov-west-1"
 ```
 
 Commercial:

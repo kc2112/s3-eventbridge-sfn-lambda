@@ -48,9 +48,9 @@ output "process_lambda_arn" {
   value       = module.process.function_arn
 }
 
-output "starter_lambda_name" {
-  description = "SQS starter Lambda name."
-  value       = module.starter.function_name
+output "throttle_lambda_name" {
+  description = "SQS throttle_fn Lambda name."
+  value       = module.throttle.function_name
 }
 
 output "partition" {

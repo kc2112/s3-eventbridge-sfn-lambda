@@ -1,20 +1,25 @@
+variable "prefix" {
+  description = "Name prefix applied to all resources in this region."
+  type        = string
+}
+
 variable "name_suffix" {
-  description = "Short suffix appended to bucket, Lambda, and state machine names so two regions in one account do not collide (e.g. west-1)."
+  description = "Short suffix so two regions in one account do not collide (e.g. west-1)."
   type        = string
 }
 
 variable "bucket_name" {
-  description = "S3 bucket name prefix. Account ID and name_suffix are appended."
+  description = "S3 bucket base name. Prefix, suffix, and account ID are applied."
   type        = string
 }
 
-variable "lambda_function_name" {
-  description = "Base Lambda function name. name_suffix is appended."
+variable "throttle_function_name" {
+  description = "Base throttle Lambda name."
   type        = string
 }
 
 variable "state_machine_name" {
-  description = "Base Step Functions name. name_suffix is appended."
+  description = "Base Step Functions name."
   type        = string
 }
 
@@ -37,13 +42,13 @@ variable "log_retention_days" {
 }
 
 variable "starter_reserved_concurrency" {
-  description = "Reserved concurrency for the SQS starter Lambda. Caps how many Step Functions executions start at once."
+  description = "Reserved concurrency for throttle_fn. Caps how many Step Functions executions start at once."
   type        = number
   default     = 5
 }
 
 variable "starter_batch_size" {
-  description = "SQS records per starter invocation."
+  description = "SQS records per throttle_fn invocation."
   type        = number
   default     = 1
 }

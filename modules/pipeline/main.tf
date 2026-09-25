@@ -1,13 +1,15 @@
 locals {
-  partition           = data.aws_partition.current.partition
-  account_id          = data.aws_caller_identity.current.account_id
-  region              = data.aws_region.current.name
-  bucket_name         = "${var.bucket_name}-${var.name_suffix}-${local.account_id}"
-  process_lambda_name = "process_${local.region}"
-  starter_lambda_name = "sfn_starter_${var.name_suffix}"
-  state_machine_name  = "${var.state_machine_name}_${var.name_suffix}"
-  input_queue_name    = "s3-ingest-${var.name_suffix}"
-  output_queue_name   = "sfn-output-${var.name_suffix}"
+  partition = data.aws_partition.current.partition
+  account_id = data.aws_caller_identity.current.account_id
+  region     = data.aws_region.current.name
+
+  # S3 names cannot contain underscores.
+  bucket_name         = "${var.prefix}-${var.bucket_name}-${var.name_suffix}-${local.account_id}"
+  process_lambda_name = "${var.prefix}_process_${local.region}"
+  throttle_fn_name    = "${var.prefix}_${var.throttle_function_name}_${var.name_suffix}"
+  state_machine_name  = "${var.prefix}_${var.state_machine_name}_${var.name_suffix}"
+  input_queue_name    = "${var.prefix}_input_queue_${var.name_suffix}"
+  output_queue_name   = "${var.prefix}_output_queue_${var.name_suffix}"
 }
 
 module "s3" {
@@ -65,7 +67,7 @@ module "step_function" {
   log_retention_days = var.log_retention_days
 }
 
-data "aws_iam_policy_document" "starter" {
+data "aws_iam_policy_document" "throttle" {
   statement {
     sid       = "StartExecution"
     effect    = "Allow"
@@ -86,10 +88,10 @@ data "aws_iam_policy_document" "starter" {
   }
 }
 
-module "starter" {
+module "throttle" {
   source = "../lambda"
 
-  function_name                  = local.starter_lambda_name
+  function_name                  = local.throttle_fn_name
   bucket_name                    = module.s3.bucket_name
   bucket_arn                     = module.s3.bucket_arn
   timeout                        = var.lambda_timeout
@@ -99,7 +101,7 @@ module "starter" {
   source_file                    = "src/starter.mjs"
   reserved_concurrent_executions = var.starter_reserved_concurrency
   attach_extra_policy            = true
-  extra_policy_json              = data.aws_iam_policy_document.starter.json
+  extra_policy_json              = data.aws_iam_policy_document.throttle.json
   environment = {
     STATE_MACHINE_ARN = module.step_function.state_machine_arn
   }
@@ -107,7 +109,7 @@ module "starter" {
 
 resource "aws_lambda_event_source_mapping" "input_queue" {
   event_source_arn                   = module.input_queue.queue_arn
-  function_name                      = module.starter.function_arn
+  function_name                      = module.throttle.function_arn
   batch_size                         = var.starter_batch_size
   maximum_batching_window_in_seconds = 0
   enabled                            = true

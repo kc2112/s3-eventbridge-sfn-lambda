@@ -1,19 +1,30 @@
 variable "primary" {
   description = "Primary AWS region for this stack."
   type        = string
-  default     = "us-east-1" #"us-gov-west-1"
+  default     = "us-gov-east-1"
 }
 
 variable "secondary" {
   description = "Secondary AWS region for this stack. Ignored when primary_only is true."
   type        = string
-  default     = "us-west-1" #"us-gov-east-1"
+  default     = "us-gov-west-1"
 }
 
 variable "primary_only" {
   description = "If true, deploy only the primary region."
   type        = bool
-  default     = true
+  default     = false
+}
+
+variable "prefix" {
+  description = "Name prefix applied to all created resources."
+  type        = string
+  default     = "cmm"
+
+  validation {
+    condition     = can(regex("^[a-z0-9]+$", var.prefix))
+    error_message = "prefix must be lowercase alphanumeric so it is valid in S3, SQS, Lambda, and IAM names."
+  }
 }
 
 variable "tags" {
@@ -28,7 +39,7 @@ variable "tags" {
 variable "bucket_name" {
   description = "S3 bucket name prefix. Suffix and account ID are appended per region."
   type        = string
-  default     = "my-bucket"
+  default     = "temp-storage"
 
   validation {
     condition     = can(regex("^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$", var.bucket_name))
@@ -36,16 +47,16 @@ variable "bucket_name" {
   }
 }
 
-variable "lambda_function_name" {
-  description = "Base Lambda name. A region suffix is appended."
+variable "throttle_function_name" {
+  description = "Base name of the SQS throttle Lambda. Prefix and region suffix are applied."
   type        = string
-  default     = "my_lambda"
+  default     = "throttle_fn"
 }
 
 variable "state_machine_name" {
-  description = "Base state machine name. A region suffix is appended."
+  description = "Base state machine name. Prefix and region suffix are applied."
   type        = string
-  default     = "my_sfn"
+  default     = "process_data"
 }
 
 variable "lambda_timeout" {

@@ -7,13 +7,14 @@ locals {
 module "primary" {
   source = "./modules/pipeline"
 
-  name_suffix          = local.suffix_primary
-  bucket_name          = var.bucket_name
-  lambda_function_name = var.lambda_function_name
-  state_machine_name   = var.state_machine_name
-  lambda_timeout       = var.lambda_timeout
-  lambda_memory_mb     = var.lambda_memory_mb
-  log_retention_days   = var.log_retention_days
+  prefix                 = var.prefix
+  name_suffix            = local.suffix_primary
+  bucket_name            = var.bucket_name
+  throttle_function_name = var.throttle_function_name
+  state_machine_name     = var.state_machine_name
+  lambda_timeout         = var.lambda_timeout
+  lambda_memory_mb       = var.lambda_memory_mb
+  log_retention_days     = var.log_retention_days
 }
 
 module "secondary" {
@@ -24,11 +25,12 @@ module "secondary" {
     aws = aws.secondary
   }
 
-  name_suffix          = local.suffix_secondary
-  bucket_name          = var.bucket_name
-  lambda_function_name = var.lambda_function_name
-  state_machine_name   = var.state_machine_name
-  lambda_timeout       = var.lambda_timeout
-  lambda_memory_mb     = var.lambda_memory_mb
-  log_retention_days   = var.log_retention_days
+  prefix                 = var.prefix
+  name_suffix            = local.suffix_secondary
+  bucket_name            = var.bucket_name
+  throttle_function_name = var.throttle_function_name
+  state_machine_name     = var.state_machine_name
+  lambda_timeout         = var.lambda_timeout
+  lambda_memory_mb       = var.lambda_memory_mb
+  log_retention_days     = var.log_retention_days
 }

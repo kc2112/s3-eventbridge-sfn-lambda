@@ -1,13 +1,13 @@
 variable "primary" {
   description = "Primary GovCloud region."
   type        = string
-  default     = "us-gov-west-1"
+  default     = "us-gov-east-1"
 }
 
 variable "secondary" {
   description = "Secondary GovCloud region."
   type        = string
-  default     = "us-gov-east-1"
+  default     = "us-gov-west-1"
 }
 
 variable "primary_only" {
