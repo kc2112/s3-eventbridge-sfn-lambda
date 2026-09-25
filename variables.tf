@@ -22,8 +22,8 @@ variable "prefix" {
   default     = "cmm"
 
   validation {
-    condition     = can(regex("^[a-z0-9]+$", var.prefix))
-    error_message = "prefix must be lowercase alphanumeric so it is valid in S3, SQS, Lambda, and IAM names."
+    condition     = can(regex("^[a-z0-9]+(-[a-z0-9]+)*$", var.prefix))
+    error_message = "prefix must be lowercase alphanumeric segments separated by hyphens (e.g. cmm or cmm-app). No leading, trailing, or doubled hyphens."
   }
 }
 
