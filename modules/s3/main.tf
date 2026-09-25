@@ -1,9 +1,9 @@
-resource "aws_s3_bucket" "my_bucket" {
+resource "aws_s3_bucket" "temp_storage" {
   bucket = var.bucket_name
 }
 
-resource "aws_s3_bucket_public_access_block" "my_bucket" {
-  bucket = aws_s3_bucket.my_bucket.id
+resource "aws_s3_bucket_public_access_block" "temp_storage" {
+  bucket = aws_s3_bucket.temp_storage.id
 
   block_public_acls       = true
   block_public_policy     = true
@@ -11,16 +11,16 @@ resource "aws_s3_bucket_public_access_block" "my_bucket" {
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_ownership_controls" "my_bucket" {
-  bucket = aws_s3_bucket.my_bucket.id
+resource "aws_s3_bucket_ownership_controls" "temp_storage" {
+  bucket = aws_s3_bucket.temp_storage.id
 
   rule {
     object_ownership = "BucketOwnerEnforced"
   }
 }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "my_bucket" {
-  bucket = aws_s3_bucket.my_bucket.id
+resource "aws_s3_bucket_server_side_encryption_configuration" "temp_storage" {
+  bucket = aws_s3_bucket.temp_storage.id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -30,12 +30,12 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "my_bucket" {
   }
 }
 
-resource "aws_s3_bucket_versioning" "my_bucket" {
-  bucket = aws_s3_bucket.my_bucket.id
+resource "aws_s3_bucket_versioning" "temp_storage" {
+  bucket = aws_s3_bucket.temp_storage.id
 
   versioning_configuration {
     status = "Enabled"
   }
 }
 
-# Notifications are attached by the pipeline after the input SQS queue exists.
+# Notifications are attached by the pipeline after the input queue exists.

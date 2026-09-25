@@ -1,7 +1,7 @@
 data "aws_region" "current" {}
 data "aws_partition" "current" {}
 
-data "aws_iam_policy_document" "assume" {
+data "aws_iam_policy_document" "assume_states" {
   statement {
     sid     = "AllowStatesAssume"
     effect  = "Allow"
@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "assume" {
   }
 }
 
-data "aws_iam_policy_document" "my_sfn" {
+data "aws_iam_policy_document" "process_data" {
   statement {
     sid       = "InvokeProcessLambda"
     effect    = "Allow"

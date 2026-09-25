@@ -1,16 +1,16 @@
 output "queue_name" {
   description = "Queue name."
-  value       = aws_sqs_queue.this.name
+  value       = aws_sqs_queue.queue.name
 }
 
 output "queue_arn" {
   description = "Queue ARN."
-  value       = aws_sqs_queue.this.arn
+  value       = aws_sqs_queue.queue.arn
 }
 
 output "queue_url" {
   description = "Queue URL."
-  value       = aws_sqs_queue.this.id
+  value       = aws_sqs_queue.queue.id
 }
 
 output "dlq_arn" {

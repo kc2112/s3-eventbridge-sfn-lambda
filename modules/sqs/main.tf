@@ -4,7 +4,7 @@ resource "aws_sqs_queue" "dlq" {
   sqs_managed_sse_enabled   = true
 }
 
-resource "aws_sqs_queue" "this" {
+resource "aws_sqs_queue" "queue" {
   name                       = var.name
   visibility_timeout_seconds = var.visibility_timeout_seconds
   message_retention_seconds  = var.message_retention_seconds
@@ -22,12 +22,12 @@ resource "aws_sqs_queue_redrive_allow_policy" "dlq" {
 
   redrive_allow_policy = jsonencode({
     redrivePermission = "byQueue"
-    sourceQueueArns   = [aws_sqs_queue.this.arn]
+    sourceQueueArns   = [aws_sqs_queue.queue.arn]
   })
 }
 
 resource "aws_sqs_queue_policy" "s3" {
   count     = var.allow_s3_notifications ? 1 : 0
-  queue_url = aws_sqs_queue.this.id
+  queue_url = aws_sqs_queue.queue.id
   policy    = data.aws_iam_policy_document.s3_send[0].json
 }

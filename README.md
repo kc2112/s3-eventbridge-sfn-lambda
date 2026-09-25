@@ -4,7 +4,8 @@ Deploys an independent ingest pipeline in a **primary** and **secondary** region
 
 ```
 primary                                           secondary
-S3 → input SQS → starter → my_sfn → output SQS    S3 → input SQS → starter → my_sfn → output SQS
+S3 → input-queue → throttle-fn → process-data → output-queue
+    S3 → input-queue → throttle-fn → process-data → output-queue
 ```
 
 ```bash

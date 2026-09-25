@@ -34,13 +34,13 @@ variable "log_retention_days" {
 variable "handler" {
   description = "Lambda handler."
   type        = string
-  default     = "index.handler"
+  default     = "throttle.handler"
 }
 
 variable "source_file" {
   description = "Path to the function source file, relative to this module."
   type        = string
-  default     = "src/index.mjs"
+  default     = "src/throttle.mjs"
 }
 
 variable "environment" {

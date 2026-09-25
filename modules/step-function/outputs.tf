@@ -1,9 +1,9 @@
 output "state_machine_name" {
   description = "State machine name."
-  value       = aws_sfn_state_machine.my_sfn.name
+  value       = aws_sfn_state_machine.process_data.name
 }
 
 output "state_machine_arn" {
   description = "State machine ARN."
-  value       = aws_sfn_state_machine.my_sfn.arn
+  value       = aws_sfn_state_machine.process_data.arn
 }

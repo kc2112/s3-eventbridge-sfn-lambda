@@ -2,7 +2,7 @@ data "aws_partition" "current" {}
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
-data "aws_iam_policy_document" "assume" {
+data "aws_iam_policy_document" "assume_lambda" {
   statement {
     sid     = "AllowLambdaAssume"
     effect  = "Allow"
@@ -15,7 +15,8 @@ data "aws_iam_policy_document" "assume" {
   }
 }
 
-data "aws_iam_policy_document" "my_lambda" {
+# Shared by throttle-fn and process-<region>: logs + read the ingest object.
+data "aws_iam_policy_document" "logs_and_s3_read" {
   statement {
     sid    = "CloudWatchLogs"
     effect = "Allow"
@@ -38,7 +39,7 @@ data "aws_iam_policy_document" "my_lambda" {
   }
 }
 
-data "archive_file" "my_lambda" {
+data "archive_file" "package" {
   type        = "zip"
   source_file = "${path.module}/${var.source_file}"
   output_path = "${path.module}/src/${var.function_name}.zip"

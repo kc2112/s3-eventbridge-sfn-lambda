@@ -103,9 +103,9 @@ module "throttle" {
   timeout                        = var.lambda_timeout
   memory_size                    = var.lambda_memory_mb
   log_retention_days             = var.log_retention_days
-  handler                        = "starter.handler"
-  source_file                    = "src/starter.mjs"
-  reserved_concurrent_executions = var.starter_reserved_concurrency
+  handler                        = "throttle.handler"
+  source_file                    = "src/throttle.mjs"
+  reserved_concurrent_executions = var.throttle_reserved_concurrency
   attach_extra_policy            = true
   extra_policy_json              = data.aws_iam_policy_document.throttle.json
   environment = {
@@ -116,11 +116,11 @@ module "throttle" {
 resource "aws_lambda_event_source_mapping" "input_queue" {
   event_source_arn                   = module.input_queue.queue_arn
   function_name                      = module.throttle.function_arn
-  batch_size                         = var.starter_batch_size
+  batch_size                         = var.throttle_batch_size
   maximum_batching_window_in_seconds = 0
   enabled                            = true
 
   scaling_config {
-    maximum_concurrency = var.starter_reserved_concurrency
+    maximum_concurrency = var.throttle_reserved_concurrency
   }
 }

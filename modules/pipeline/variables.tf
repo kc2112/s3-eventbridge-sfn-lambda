@@ -41,13 +41,13 @@ variable "log_retention_days" {
   default     = 30
 }
 
-variable "starter_reserved_concurrency" {
+variable "throttle_reserved_concurrency" {
   description = "Reserved concurrency for throttle_fn. Caps how many Step Functions executions start at once."
   type        = number
   default     = 5
 }
 
-variable "starter_batch_size" {
+variable "throttle_batch_size" {
   description = "SQS records per throttle_fn invocation."
   type        = number
   default     = 1

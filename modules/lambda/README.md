@@ -1,3 +1,8 @@
 # lambda
 
-Node.js 24 Lambda (`my_lambda`) plus execution role and log group. Invoked by EventBridge after `my_sfn` succeeds. Grants `s3:GetObject` on the source bucket.
+Reusable Node.js 24 function module (execution role, logs, optional extra policy).
+
+Used twice in the pipeline:
+
+- `module.throttle` — SQS consumer that calls `StartExecution` (`src/throttle.mjs`)
+- `module.process` — in-state-machine passthrough (`src/passthrough.mjs`)

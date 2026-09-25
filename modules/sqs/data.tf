@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "s3_send" {
     }
 
     actions   = ["sqs:SendMessage"]
-    resources = [aws_sqs_queue.this.arn]
+    resources = [aws_sqs_queue.queue.arn]
 
     condition {
       test     = "ArnLike"
