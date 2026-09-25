@@ -1,0 +1,4 @@
+primary      = "us-gov-west-1"
+secondary    = "us-gov-east-1"
+primary_only = true
+bucket_name  = "my-bucket"

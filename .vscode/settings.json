@@ -1,0 +1,4 @@
+{
+  "terraform.experimentalFeatures.validateOnSave": true,
+  "terraform.languageServer.enable": true
+}
